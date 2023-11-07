@@ -18,14 +18,14 @@ pipeline {
         stage('Build') {
             steps {
                 dir('devops_pr/DevOps_Project') {
-                    sh 'mvnw clean compile'
+                    sh 'mvn clean compile'
                 }
             }
         }
         stage('Test avec Mockito et JUnit') {
             steps {
                 dir('devops_pr/DevOps_Project') {
-                    sh 'mvnw test'
+                    sh 'mvn test'
                 }
             }
             post {
