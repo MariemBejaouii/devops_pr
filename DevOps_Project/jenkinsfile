@@ -5,7 +5,7 @@ pipeline {
         stage('Getting the project from Git') {
             steps {
                 sh 'rm -rf *'
-                sh 'git clone https://github.com/MariemBejaouii/devops_pr.git'
+                sh 'git clone https://github.com/MariemBejaouii/devops_pr.git devops_pr'
             }
         }
         stage('Cleaning the project') {
@@ -17,18 +17,17 @@ pipeline {
         }
         stage('Build') {
             steps {
-                // Utilisation de l'outil Git pour cloner le référentiel
-                git url: 'https://github.com/MariemBejaouii/devops_pr.git'
-                sh './mvnw clean compile'
-                // Si vous utilisez Windows, utilisez la commande bat '.\\mvnw clean compile' à la place
+                dir('devops_pr/DevOps_Project') {
+                    sh './mvnw clean compile'
+                }
             }
         }
-        stage('Test') {
+        stage('Test avec Mockito et JUnit') {
             steps {
-                sh './mvnw test'
-                // Si vous utilisez Windows, utilisez la commande bat '.\\mvnw test' à la place
+                dir('devops_pr/DevOps_Project') {
+                    sh './mvnw test'
+                }
             }
-
             post {
                 always {
                     junit '**/target/surefire-reports/TEST-*.xml'
