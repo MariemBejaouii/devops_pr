@@ -1,0 +1,39 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Getting the project from Git') {
+            steps {
+                sh 'rm -rf *'
+                sh 'git clone https://github.com/MariemBejaouii/devops_pr.git'
+            }
+        }
+        stage('Cleaning the project') {
+            steps {
+                dir('devops_pr/DevOps_Project') {
+                    sh 'mvn clean'
+                }
+            }
+        }
+        stage('Build') {
+            steps {
+                // Utilisation de l'outil Git pour cloner le référentiel
+                git url: 'https://github.com/MariemBejaouii/devops_pr.git'
+                sh './mvnw clean compile'
+                // Si vous utilisez Windows, utilisez la commande bat '.\\mvnw clean compile' à la place
+            }
+        }
+        stage('Test') {
+            steps {
+                sh './mvnw test'
+                // Si vous utilisez Windows, utilisez la commande bat '.\\mvnw test' à la place
+            }
+
+            post {
+                always {
+                    junit '**/target/surefire-reports/TEST-*.xml'
+                }
+            }
+        }
+    }
+}
