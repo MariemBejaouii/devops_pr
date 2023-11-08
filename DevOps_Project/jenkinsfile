@@ -22,17 +22,13 @@ pipeline {
                 }
             }
         }
-        stage('Test avec Mockito et JUnit') {
-            steps {
-                dir('devops_pr/DevOps_Project') {
-                    sh 'mvn test'
-                }
-            }
-            post {
-                always {
-                    junit '**/target/surefire-reports/TEST-*.xml'
-                }
-            }
-        }
+       stage('Build') {
+           steps {
+                 dir('devops_pr/DevOps_Project') {
+                   sh 'mvn clean install sonar:sonar'
+               }
+           }
+       }
+
     }
 }
