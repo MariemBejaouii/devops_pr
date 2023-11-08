@@ -22,7 +22,7 @@ pipeline {
                 }
             }
         }
-        stage('Build and SonarQube Analysis') { 
+        stage('Build and SonarQube Analysis') {
             steps {
                 dir('devops_pr/DevOps_Project') {
                     sh 'mvn clean install sonar:sonar'
